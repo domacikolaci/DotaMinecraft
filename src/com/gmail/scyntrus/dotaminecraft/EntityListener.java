@@ -1,5 +1,6 @@
 package com.gmail.scyntrus.dotaminecraft;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -33,7 +34,7 @@ public class EntityListener implements Listener {
 	}
 	
 	@EventHandler(priority = EventPriority.LOWEST)
-    public void onPlayerJoin(PlayerJoinEvent event) {
+    public void onPlayerJoin(final PlayerJoinEvent event) {
 		Player player = event.getPlayer();
 		plugin.playerlist.remove(player.getName());
 		plugin.playerkills.remove(player.getName());
@@ -41,11 +42,15 @@ public class EntityListener implements Listener {
 		if (!player.getWorld().getName().equals(plugin.WorldName)){
 			return;
 		}
-		// Auto join lobby code
-		plugin.getServer().dispatchCommand(player, "dota join" );
 		
-		player.teleport(plugin.getServer().getWorld(plugin.WorldName).getSpawnLocation());
 		player.setBedSpawnLocation(plugin.getServer().getWorld(plugin.WorldName).getSpawnLocation());
+		Bukkit.getScheduler().runTaskAsynchronously(plugin, 
+				new Runnable() {
+			@Override
+			public void run() {
+				plugin.getServer().dispatchCommand(event.getPlayer(), "dota join" );
+			}
+		});
 		player.getInventory().clear();
 		player.getInventory().setArmorContents(null);
 		player.setHealth(20);

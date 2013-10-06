@@ -106,26 +106,7 @@ public class DotaCommand implements CommandExecutor {
 						if (plugin.GameInProgress) {
 							sender.sendMessage(ChatColor.DARK_RED + "You have restarted the game while in progress. You really shouldn't do that too often.");
 						}
-						for (Player player : plugin.getServer().getWorld(plugin.WorldName).getPlayers()){
-							player.teleport(plugin.getServer().getWorld(plugin.WorldName).getSpawnLocation());
-							player.setBedSpawnLocation(plugin.getServer().getWorld(plugin.WorldName).getSpawnLocation());
-							player.getInventory().clear();
-							player.getInventory().setArmorContents(null);
-							player.setHealth(20);
-							player.setFoodLevel(20);
-						}
-						plugin.playerhasjoined.clear();
-						plugin.playerlist.clear();
-						plugin.playerkills.clear();
-						plugin.playerdeaths.clear();
-						plugin.playerdeathitems.clear();
-						plugin.playerdeatharmor.clear();
-						plugin.broadcastMessage("Dota world is being restarted!");
-						MVWorldManager MVWM = plugin.MVCorePlugin.getMVWorldManager();
-						MVWM.unloadWorld(plugin.WorldName);
-						MVWM.loadWorld(plugin.WorldName);
-						
-						PluginListener.setupWorld(plugin);
+						resetGame();
 					}
 				} else {
 					sender.sendMessage("You do not have permission to restart the game.");
@@ -164,4 +145,27 @@ public class DotaCommand implements CommandExecutor {
 		}
 		return true;
     }
+	
+	public void resetGame() {
+		for (Player player : plugin.getServer().getWorld(plugin.WorldName).getPlayers()){
+			player.teleport(plugin.getServer().getWorld(plugin.WorldName).getSpawnLocation());
+			player.setBedSpawnLocation(plugin.getServer().getWorld(plugin.WorldName).getSpawnLocation());
+			player.getInventory().clear();
+			player.getInventory().setArmorContents(null);
+			player.setHealth(20);
+			player.setFoodLevel(20);
+		}
+		plugin.playerhasjoined.clear();
+		plugin.playerlist.clear();
+		plugin.playerkills.clear();
+		plugin.playerdeaths.clear();
+		plugin.playerdeathitems.clear();
+		plugin.playerdeatharmor.clear();
+		plugin.broadcastMessage("Dota world is being restarted!");
+		MVWorldManager MVWM = plugin.MVCorePlugin.getMVWorldManager();
+		MVWM.unloadWorld(plugin.WorldName);
+		MVWM.loadWorld(plugin.WorldName);
+		
+		PluginListener.setupWorld(plugin);
+	}
 }

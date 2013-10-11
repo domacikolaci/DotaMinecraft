@@ -4,6 +4,10 @@
 # SET THIS TO TRUE
 Enabled: false
 
+# TeamNames
+RedName: Red
+BlueName: Blue
+
 # The name of the Dota world. May not contain spaces or periods
 WorldName: Minecraft_dota
 

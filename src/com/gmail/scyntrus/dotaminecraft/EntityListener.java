@@ -23,6 +23,7 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
@@ -314,6 +315,20 @@ public class EntityListener implements Listener {
 				event.getPlayer().setBedSpawnLocation(event.getTo().getWorld().getSpawnLocation(),true);
 				event.getPlayer().sendMessage(ChatColor.DARK_RED + "You have left the game.");
 			}
+		}
+	}
+	
+	@EventHandler
+	public void onPlayerChat(AsyncPlayerChatEvent event) {
+		Player p = event.getPlayer();
+		if(plugin.playerlist.containsKey(p.getName())) {
+			String currentFormat = event.getFormat();
+			if(plugin.playerlist.get(p.getName())==1) {
+				currentFormat = "["+ChatColor.RED+plugin.RedName+ChatColor.RESET+"] "+currentFormat;
+			} else if(plugin.playerlist.get(p.getName())==2) {
+				currentFormat = "["+ChatColor.BLUE+plugin.BlueName+ChatColor.RESET+"] "+currentFormat;
+			}
+			event.setFormat(currentFormat);
 		}
 	}
 }

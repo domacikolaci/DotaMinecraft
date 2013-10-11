@@ -33,6 +33,8 @@ public class DotaMinecraft extends JavaPlugin {
 	public final Rectangle WorldSpawn = new Rectangle(-1278,100,40,41);
 	public final Rectangle RedSpawn = new Rectangle(-1197,438,11,22);
 	public final Rectangle BlueSpawn = new Rectangle(-948,176,11,22);
+	public String RedName = "Red";
+	public String BlueName = "Blue";
 	public Location RedPoint = null;
 	public Location BluePoint = null;
 	public Location RedBed = null;
@@ -48,7 +50,6 @@ public class DotaMinecraft extends JavaPlugin {
 	public PluginManager pm = null;
 	public boolean RecallEnabled = false;
 	public int RecallDelay = 6;
-	
 	public boolean removeMobArmor = false;
 	public boolean giveMobsHelmet = false;
 	
@@ -71,6 +72,8 @@ public class DotaMinecraft extends JavaPlugin {
     	this.RecallEnabled = config.getBoolean("RecallEnabled");
     	this.RecallDelay = config.getInt("RecallDelay");
     	this.colorNameTag = config.getBoolean("colorNameTag");
+    	this.BlueName = config.getString("BlueName");
+    	this.RedName = config.getString("RedName");
     	
 		this.pm = this.getServer().getPluginManager();
     	

@@ -54,12 +54,12 @@ public class DotaCommand implements CommandExecutor {
 						}
 					} else {
 						if (player.hasPermission("dota.chooseteam")) {
-							if (split[1].toLowerCase().equals("blue")) {
+							if (split[1].toLowerCase().equals(plugin.BlueName.toLowerCase())) {
 								jointeam = 2;
-							} else if (split[1].toLowerCase().equals("red")) {
+							} else if (split[1].toLowerCase().equals(plugin.RedName.toLowerCase())) {
 								jointeam = 1;
 							} else {
-								player.sendMessage("What team is that? Please choose either "+ChatColor.RED+"red"+ChatColor.RESET+" or "+ChatColor.BLUE+"blue.");
+								player.sendMessage("What team is that? Please choose either "+ChatColor.RED+plugin.RedName+ChatColor.RESET+" or "+ChatColor.BLUE+plugin.BlueName+ChatColor.RESET+".");
 								return true;
 							}
 						} else {
@@ -84,7 +84,7 @@ public class DotaCommand implements CommandExecutor {
 						player.setCustomNameVisible(true);
 						player.teleport(plugin.BluePoint);
 						player.setBedSpawnLocation(plugin.BlueBed);
-						plugin.broadcastMessage(player.getName() + " has joined team "+ChatColor.BLUE+"Blue.");
+						plugin.broadcastMessage(player.getName() + " has joined team "+ChatColor.BLUE+plugin.BlueName+ChatColor.RESET+".");
 					} else if (jointeam == 1){
 						plugin.RedCount++;
 						plugin.playerlist.put(player.getName(), 1);
@@ -92,7 +92,7 @@ public class DotaCommand implements CommandExecutor {
 						player.setCustomNameVisible(true);
 						player.teleport(plugin.RedPoint);
 						player.setBedSpawnLocation(plugin.RedBed);
-						plugin.broadcastMessage(player.getName() + " has joined team "+ChatColor.RED+"Red.");
+						plugin.broadcastMessage(player.getName() + " has joined team "+ChatColor.RED+plugin.RedName+ChatColor.RESET+".");
 					}
 					plugin.playerhasjoined.put(player.getName(), true);
 				} else {

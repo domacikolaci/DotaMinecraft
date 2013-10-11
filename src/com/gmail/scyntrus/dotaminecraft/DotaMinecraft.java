@@ -15,6 +15,7 @@ import org.bukkit.plugin.PluginManager;
 
 import com.gmail.scyntrus.dotaminecraft.metrics.MetricsLite;
 import com.onarandombox.MultiverseCore.MultiverseCore;
+import com.onarandombox.MultiverseCore.api.MVWorldManager;
 
 public class DotaMinecraft extends JavaPlugin {
 	public World world;
@@ -110,4 +111,27 @@ public class DotaMinecraft extends JavaPlugin {
     		p.sendMessage(message);
     	}
     }
+    
+    public void resetGame() {
+		for (Player player : getServer().getWorld(WorldName).getPlayers()){
+			player.teleport(getServer().getWorld(WorldName).getSpawnLocation());
+			player.setBedSpawnLocation(getServer().getWorld(WorldName).getSpawnLocation());
+			player.getInventory().clear();
+			player.getInventory().setArmorContents(null);
+			player.setHealth(20);
+			player.setFoodLevel(20);
+		}
+		playerhasjoined.clear();
+		playerlist.clear();
+		playerkills.clear();
+		playerdeaths.clear();
+		playerdeathitems.clear();
+		playerdeatharmor.clear();
+		broadcastMessage("Dota world is being restarted!");
+		MVWorldManager MVWM = MVCorePlugin.getMVWorldManager();
+		MVWM.unloadWorld(WorldName);
+		MVWM.loadWorld(WorldName);
+		
+		PluginListener.setupWorld(this);
+	}
 }

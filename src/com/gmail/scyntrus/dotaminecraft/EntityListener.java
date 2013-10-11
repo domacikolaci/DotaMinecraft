@@ -292,6 +292,17 @@ public class EntityListener implements Listener {
 							plugin.broadcastMessage(ChatColor.RED+"Red Team has won!");
 							plugin.GameInProgress = false;
 						}
+						plugin.broadcastMessage("Resetting in 10 seconds.");
+						Bukkit.getScheduler().runTaskLater(plugin, 
+								new Runnable() {
+							
+							@Override
+							public void run() {
+								plugin.resetGame();
+							}
+							
+						}, 200);
+						
 					}
 				}
 			}

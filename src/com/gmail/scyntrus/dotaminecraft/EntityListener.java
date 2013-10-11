@@ -1,10 +1,12 @@
 package com.gmail.scyntrus.dotaminecraft;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Server;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -29,6 +31,7 @@ import org.bukkit.inventory.PlayerInventory;
 
 public class EntityListener implements Listener {
 	DotaMinecraft plugin;
+	List<String> SpawningPlayers = new ArrayList<String>();
 	
 	public EntityListener(DotaMinecraft plugin){
 		this.plugin = plugin;
@@ -45,7 +48,7 @@ public class EntityListener implements Listener {
 		}
 		
 		player.setBedSpawnLocation(plugin.getServer().getWorld(plugin.WorldName).getSpawnLocation());
-		Bukkit.getScheduler().runTaskAsynchronously(plugin, 
+		Bukkit.getScheduler().runTask(plugin, 
 				new Runnable() {
 			@Override
 			public void run() {
@@ -106,6 +109,9 @@ public class EntityListener implements Listener {
 		if (event.getDamager().getWorld().getName().equals(plugin.WorldName) && event.getDamager() instanceof Player && event.getEntity() instanceof Player) {
 			String p1 = ((Player) event.getEntity()).getName();
 			String p2 = ((Player) event.getDamager()).getName();
+			if(SpawningPlayers.contains(p1)) {
+				event.setCancelled(true);
+			}
 			if (plugin.playerlist.containsKey(p1) && plugin.playerlist.containsKey(p2)){
 				if (plugin.playerlist.get(p1) == plugin.playerlist.get(p2)){
 					event.setCancelled(true);
@@ -170,7 +176,7 @@ public class EntityListener implements Listener {
 	}
 	
 	@EventHandler
-	public void onPlayerRespawn(PlayerRespawnEvent event) {
+	public void onPlayerRespawn(final PlayerRespawnEvent event) {
 		if (!event.getPlayer().getWorld().getName().equals(plugin.WorldName)){
 			return;
 		}
@@ -189,6 +195,21 @@ public class EntityListener implements Listener {
 			plugin.playerdeathitems.remove(name);
 			plugin.playerdeatharmor.remove(name);
 		}
+		event.getPlayer().sendMessage("Respawning in 10 seconds.");
+		SpawningPlayers.add(event.getPlayer().getName());
+		Bukkit.getScheduler().runTaskLater(plugin, 
+				new Runnable() {
+			@Override
+			public void run() {
+				if(plugin.playerlist.get(event.getPlayer().getName()) == 1) {
+					event.getPlayer().teleport(plugin.RedPoint);
+				} else if (plugin.playerlist.get(event.getPlayer().getName()) == 2) {
+					event.getPlayer().teleport(plugin.BluePoint);
+				}
+				SpawningPlayers.remove(event.getPlayer().getName());
+			}
+		}, 200);
+		
 	}
 	
 	@EventHandler

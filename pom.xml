@@ -43,7 +43,6 @@
                         <item>buildNumber</item>
                     </items>
                 </configuration>
-
       </plugin>
     </plugins>
     <resources>
